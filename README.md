@@ -22,9 +22,7 @@ const client = jwksClient({
   strictSsl: true, // Default value
   jwksUri: 'https://sandrino.auth0.com/.well-known/jwks.json',
   requestHeaders: {}, // Optional
-  requestAgentOptions: {}, // Optional
-  timeout: 30000, // Defaults to 30s
-  proxy: '[protocol]://[username]:[pass]@[address]:[port]', // Optional
+  timeout: 30000 // Defaults to 30s
 });
 
 const kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
@@ -95,13 +93,14 @@ certificate authority to establish TLS communication with the `jwks_uri`.
 
 ```js
 const jwksClient = require("jwks-rsa");
+const https = require('https');
 const client = jwksClient({
   strictSsl: true, // Default value
   jwksUri: 'https://my-enterprise-id-provider/.well-known/jwks.json',
   requestHeaders: {}, // Optional
-  requestAgentOptions: {
+  requestAgent: new https.Agent({
     ca: fs.readFileSync(caFile)
-  }
+  })
 });
 ```
 
@@ -110,9 +109,7 @@ documentation](https://github.com/request/request#using-optionsagentoptions).
 
 ### Proxy configuration
 
-There are two ways to configure the usage of a proxy:
- - Provide the ```proxy``` option when initialiting the client as shown above
- - Provide the ```HTTP_PROXY```, ```HTTPS_PROXY``` and ```NO_PROXY``` environment variables
+You can configure using a proxy with a [custom http(s) agent](https://github.com/TooTallNate/node-https-proxy-agent).
 
 ### Loading keys from local file, environment variable, or other externals
 
